@@ -1,4 +1,4 @@
-package com.github.esslerc.pdfamaker.converters;
+package com.github.esslerc.pdfamaker.service;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -37,7 +37,7 @@ public enum PDFAStandard {
     }
 
 
-    private PDFAStandard(Integer part, String conformance, String label) {
+    PDFAStandard(Integer part, String conformance, String label) {
         this.conformance = conformance;
         this.part = part;
         this.label = label;

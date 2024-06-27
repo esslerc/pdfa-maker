@@ -1,10 +1,9 @@
 package com.github.esslerc.pdfamaker.ui;
 
-import com.github.esslerc.pdfamaker.converters.PDFAStandard;
-import com.github.esslerc.pdfamaker.converters.PDFConverter;
-import com.github.esslerc.pdfamaker.filesystem.DefaultFileSystem;
+import com.github.esslerc.pdfamaker.service.impl.PDFAService;
+import com.github.esslerc.pdfamaker.service.PDFAStandard;
 import com.github.esslerc.pdfamaker.ui.widgets.DropArea;
-import com.github.esslerc.pdfamaker.filesystem.DirectoryUtils;
+import com.github.esslerc.pdfamaker.util.DirectoryUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -21,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainWindow {
-    private final PDFConverter converter;
+    private final PDFAService converter;
     private final Stage stage;
     private DropArea dropArea;
     private Label statusLabel;
@@ -29,7 +28,7 @@ public class MainWindow {
     private TextField outputDirField;
     private ChoiceBox<String> standardChoiceBox;
 
-    public MainWindow(PDFConverter converter, Stage stage) {
+    public MainWindow(PDFAService converter, Stage stage) {
         this.converter = converter;
         this.stage = stage;
         initUI();

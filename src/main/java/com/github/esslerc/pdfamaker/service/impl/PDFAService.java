@@ -1,23 +1,35 @@
-package com.github.esslerc.pdfamaker.converters;
+package com.github.esslerc.pdfamaker.service.impl;
 
+import com.github.esslerc.pdfamaker.service.DocumentLoader;
+import com.github.esslerc.pdfamaker.service.DocumentSaver;
+import com.github.esslerc.pdfamaker.service.PDFAStandard;
+import com.github.esslerc.pdfamaker.service.XmpMetadataCreator;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.common.PDMetadata;
 import org.apache.xmpbox.XMPMetadata;
 import org.apache.xmpbox.schema.PDFAIdentificationSchema;
 import org.apache.xmpbox.xml.XmpSerializer;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 
-public class PDFBoxConverter implements PDFConverter {
-    @Override
+public class PDFAService {
+    private final DocumentLoader documentLoader;
+    private final DocumentSaver documentSaver;
+    private final XmpMetadataCreator xmpMetadataCreator;
+
+    public PDFAService(DocumentLoader documentLoader, DocumentSaver documentSaver, XmpMetadataCreator xmpMetadataCreator) {
+        this.documentLoader = documentLoader;
+        this.documentSaver = documentSaver;
+        this.xmpMetadataCreator = xmpMetadataCreator;
+    }
+
     public void convertToPDFA(String inputPath, String outputPath, PDFAStandard pdfaStandard) throws Exception {
-        try (PDDocument document = PDDocument.load(new File(inputPath))) {
-            XMPMetadata xmp = XMPMetadata.createXMPMetadata();
+        try (PDDocument document = documentLoader.load(inputPath)) {
+            XMPMetadata xmp = xmpMetadataCreator.create();
             PDFAIdentificationSchema pdfaid = xmp.createAndAddPDFAIdentificationSchema();
             pdfaid.setPart(pdfaStandard.getPart());
-            if(pdfaStandard.getPart() < 3) {
+
+            if (pdfaStandard.getPart() < 3) {
                 pdfaid.setConformance(pdfaStandard.getConformance());
             }
 
@@ -29,7 +41,8 @@ public class PDFBoxConverter implements PDFConverter {
             metadata.importXMPMetadata(baos.toByteArray());
             document.getDocumentCatalog().setMetadata(metadata);
 
-            document.save(outputPath);
+            documentSaver.save(document, outputPath);
         }
     }
 }
+

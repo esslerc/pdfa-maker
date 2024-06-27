@@ -1,4 +1,4 @@
-package com.github.esslerc.pdfamaker;
+package com.github.esslerc.pdfamaker.config;
 
 import java.io.FileInputStream;
 import java.util.Properties;
