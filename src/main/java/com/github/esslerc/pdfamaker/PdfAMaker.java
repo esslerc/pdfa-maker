@@ -9,6 +9,8 @@ import com.github.esslerc.pdfamaker.service.impl.FileDocumentSaver;
 import com.github.esslerc.pdfamaker.service.impl.PDFAService;
 import com.github.esslerc.pdfamaker.ui.MainWindow;
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.Locale;
@@ -28,6 +30,16 @@ public class PdfAMaker extends Application {
         PDFAService converter = new PDFAService(documentLoader, documentSaver, xmpMetadataCreator);
 
         new MainWindow(converter, primaryStage, i18n);
+
+        Screen primaryScreen = Screen.getPrimary();
+        Rectangle2D primaryBounds = primaryScreen.getVisualBounds();
+
+        primaryStage.setX(primaryBounds.getMinX());
+        primaryStage.setY(primaryBounds.getMinY());
+
+        primaryStage.setWidth(800);
+        primaryStage.setHeight(600);
+
         primaryStage.show();
     }
 

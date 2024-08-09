@@ -59,7 +59,7 @@ public class MainWindow {
         layout.getChildren().add(convertButtonLayout);
 
         mainPane.setCenter(layout);
-        Scene scene = new Scene(mainPane, 800, 600);
+        Scene scene = new Scene(mainPane);
         String appCss = Objects.requireNonNull(getClass().getResource("/css/application.css")).toExternalForm();
         scene.getStylesheets().add(appCss);
 
@@ -73,7 +73,7 @@ public class MainWindow {
     }
 
     private void initializeDropArea() {
-        dropArea = new DropArea();
+        dropArea = new DropArea(i18n);
         dropArea.getItems().addListener((ListChangeListener.Change<? extends String> change)-> updateStatus());
     }
 
@@ -134,8 +134,14 @@ public class MainWindow {
 
     private void updateStatus() {
         int total = dropArea.getItems().size();
-        statusLabel.setText(total + " " + i18n.getString("files_selected"));
-        convertButton.setDisable(total == 0);
+
+        if(total == 0) {
+            statusLabel.setText(i18n.getString("drag_files_into_drop_area"));
+            convertButton.setDisable(true);
+        } else {
+            statusLabel.setText(total + " " + i18n.getString("files_selected"));
+        }
+
     }
 
     private void selectOutputDir() {
