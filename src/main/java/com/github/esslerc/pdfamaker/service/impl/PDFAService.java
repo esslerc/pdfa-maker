@@ -17,7 +17,11 @@ public class PDFAService {
     private final DocumentSaver documentSaver;
     private final XmpMetadataCreator xmpMetadataCreator;
 
-    public PDFAService(DocumentLoader documentLoader, DocumentSaver documentSaver, XmpMetadataCreator xmpMetadataCreator) {
+
+    public PDFAService(DocumentLoader documentLoader,
+                       DocumentSaver documentSaver,
+                       XmpMetadataCreator xmpMetadataCreator
+    ) {
         this.documentLoader = documentLoader;
         this.documentSaver = documentSaver;
         this.xmpMetadataCreator = xmpMetadataCreator;
