@@ -9,14 +9,18 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <openjfx.version>22.0.1</openjfx.version>
         <pdfbox.version>2.0.31</pdfbox.version>
         <junit.version>5.10.2</junit.version>
         <mockito.version>5.12.0</mockito.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>22</java.version>
+        <main.class>com.github.esslerc.pdfamaker.Main</main.class>
     </properties>
 
     <dependencies>
@@ -49,4 +53,115 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${main.class}</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.7.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>create-runtime-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${java.home}/bin/jlink</executable>
+                            <arguments>
+                                <argument>--module-path</argument>
+                                <argument>${java.home}/jmods:${project.build.directory}/libs</argument>
+                                <argument>--add-modules</argument>
+                                <argument>java.base,javafx.controls</argument>
+                                <argument>--output</argument>
+                                <argument>${project.build.directory}/runtime</argument>
+                                <argument>--strip-debug</argument>
+                                <argument>--no-header-files</argument>
+                                <argument>--no-man-pages</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>package-dmg</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${java.home}/bin/jpackage</executable>
+                            <arguments>
+                                <argument>--type</argument>
+                                <argument>dmg</argument>
+                                <argument>--input</argument>
+                                <argument>${project.build.directory}</argument>
+                                <argument>--dest</argument>
+                                <argument>${project.build.directory}/dmg</argument>
+                                <argument>--name</argument>
+                                <argument>${project.name}</argument>
+                                <argument>--main-jar</argument>
+                                <argument>${project.build.finalName}.jar</argument>
+                                <argument>--main-class</argument>
+                                <argument>${main.class}</argument>
+                                <argument>--icon</argument>
+                                <argument>${project.basedir}/src/main/resources/icons/icon.icns</argument>
+                                <argument>--runtime-image</argument>
+                                <argument>${project.build.directory}/runtime</argument>
+                                <argument>--app-version</argument>
+                                <argument>1.0</argument>
+                                <argument>--vendor</argument>
+                                <argument>esslerc</argument>
+                                <argument>--mac-package-name</argument>
+                                <argument>${project.name}</argument>
+                                <argument>--mac-package-identifier</argument>
+                                <argument>com.github.esslerc.pdfamaker</argument>
+<!--                                <argument>&#45;&#45;mac-package-signing-prefix</argument>-->
+<!--                                <argument>Developer ID Application</argument>-->
+<!--                                <argument>&#45;&#45;mac-sign</argument>-->
+<!--                                <argument>&#45;&#45;mac-signing-key-user-name</argument>-->
+<!--                                <argument>YOUR_APPLE_ID</argument>-->
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

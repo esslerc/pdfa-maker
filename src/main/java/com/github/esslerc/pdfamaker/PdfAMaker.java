@@ -10,10 +10,13 @@ import com.github.esslerc.pdfamaker.service.impl.PDFAService;
 import com.github.esslerc.pdfamaker.ui.MainWindow;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.InputStream;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class PdfAMaker extends Application {
@@ -28,6 +31,9 @@ public class PdfAMaker extends Application {
 
 
         PDFAService converter = new PDFAService(documentLoader, documentSaver, xmpMetadataCreator);
+
+        InputStream appIcon = Objects.requireNonNull(getClass().getResourceAsStream("/icons/heroicons/document-check.png"));
+        primaryStage.getIcons().add(new Image(appIcon));
 
         new MainWindow(converter, primaryStage, i18n);
 

@@ -137,10 +137,10 @@ public class MainWindow {
 
         if(total == 0) {
             statusLabel.setText(i18n.getString("drag_files_into_drop_area"));
-            convertButton.setDisable(true);
         } else {
             statusLabel.setText(total + " " + i18n.getString("files_selected"));
         }
+        convertButton.setDisable(total==0);
 
     }
 

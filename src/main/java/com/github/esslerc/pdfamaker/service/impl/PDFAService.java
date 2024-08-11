@@ -37,16 +37,23 @@ public class PDFAService {
                 pdfaid.setConformance(pdfaStandard.getConformance());
             }
 
-            XmpSerializer serializer = new XmpSerializer();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            serializer.serialize(xmp, baos, true);
+            getXmpSerializer().serialize(xmp, baos, true);
 
-            PDMetadata metadata = new PDMetadata(document);
+            PDMetadata metadata = getPDMetadata(document);
             metadata.importXMPMetadata(baos.toByteArray());
             document.getDocumentCatalog().setMetadata(metadata);
 
             documentSaver.save(document, outputPath);
         }
+    }
+
+     XmpSerializer getXmpSerializer() {
+        return new XmpSerializer();
+    }
+
+    public PDMetadata getPDMetadata(PDDocument document) {
+        return new PDMetadata(document);
     }
 }
 
