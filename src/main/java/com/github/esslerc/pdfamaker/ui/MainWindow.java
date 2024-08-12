@@ -60,10 +60,11 @@ public class MainWindow {
 
         layout.getChildren().add(buttonLayout);
 
-        VBox advancedOptionsLayout = new VBox();
+        VBox advancedOptionsLayout = new VBox(10);
         advancedOptionsLayout.getChildren().add(getOutputDirLayout());
         advancedOptionsLayout.getChildren().add(getConvertionOptionsLayout());
         TitledPane optionsPane = new TitledPane(i18n.getString("advanced_options"), advancedOptionsLayout);
+        optionsPane.setExpanded(false);
 
         layout.getChildren().add(optionsPane);
 
@@ -164,7 +165,7 @@ public class MainWindow {
         FileChooser chooser = new FileChooser();
         chooser.setTitle(i18n.getString("select_pdf_files"));
         List<File> selectedFiles = chooser.showOpenMultipleDialog(stage);
-        if (!selectedFiles.isEmpty()) {
+        if (selectedFiles != null && !selectedFiles.isEmpty()) {
             selectedFiles.forEach(file -> {
                 String absolutePath = file.getAbsolutePath();
                 if(!dropArea.getItems().contains(absolutePath)) {
@@ -230,7 +231,7 @@ public class MainWindow {
 
             showAlert(i18n.getString("convertion_finished"), message);
             dropArea.getItems().clear();
-            statusLabel.setText(i18n.getString("drag_files_into_list"));
+            statusLabel.setText(i18n.getString("drag_files_into_drop_area"));
             convertButton.setDisable(true);
         } else {
             throw new IllegalArgumentException("Selected output directory is not accessible. Output directory: " + outputDir);

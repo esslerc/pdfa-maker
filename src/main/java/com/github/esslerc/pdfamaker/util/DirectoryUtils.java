@@ -6,6 +6,11 @@ public class DirectoryUtils {
 
     public static boolean ensureDirExists(String path) {
         File file = new File(path);
-        return !file.exists() && file.mkdirs();
+
+        if(!file.exists()) {
+            return file.mkdirs();
+        } else {
+            return file.isDirectory() && file.canWrite();
+        }
     }
 }
