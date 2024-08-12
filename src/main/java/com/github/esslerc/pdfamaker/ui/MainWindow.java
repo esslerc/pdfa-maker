@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -24,6 +25,7 @@ public class MainWindow {
     private final Stage stage;
     private DropArea dropArea;
     private Label statusLabel;
+    private Button addButton;
     private Button convertButton;
     private TextField outputDirField;
     private ChoiceBox<String> standardChoiceBox;
@@ -50,13 +52,20 @@ public class MainWindow {
         initializeDropArea();
         layout.getChildren().add(dropArea);
 
-        HBox convertButtonLayout = new HBox(10);
+        HBox buttonLayout = new HBox(10);
+        initializeAddButton();
         initializeConvertButton();
-        convertButtonLayout.getChildren().add(convertButton);
+        buttonLayout.getChildren().add(addButton);
+        buttonLayout.getChildren().add(convertButton);
 
-        layout.getChildren().add(getOutputDirLayout());
-        layout.getChildren().add(getConvertionOptionsLayout());
-        layout.getChildren().add(convertButtonLayout);
+        layout.getChildren().add(buttonLayout);
+
+        VBox advancedOptionsLayout = new VBox();
+        advancedOptionsLayout.getChildren().add(getOutputDirLayout());
+        advancedOptionsLayout.getChildren().add(getConvertionOptionsLayout());
+        TitledPane optionsPane = new TitledPane(i18n.getString("advanced_options"), advancedOptionsLayout);
+
+        layout.getChildren().add(optionsPane);
 
         mainPane.setCenter(layout);
         Scene scene = new Scene(mainPane);
@@ -66,9 +75,14 @@ public class MainWindow {
         stage.setScene(scene);
     }
 
+    private void initializeAddButton() {
+        addButton = new Button(i18n.getString("add"));
+        addButton.setOnAction(_ -> addFiles());
+    }
+
     private void initializeConvertButton() {
         convertButton = new Button(i18n.getString("convert_to_pdfa"));
-        convertButton.setOnAction(e -> convertFiles());
+        convertButton.setOnAction(_ -> convertFiles());
         convertButton.setDisable(true);
     }
 
@@ -85,7 +99,7 @@ public class MainWindow {
         MenuBar menubar = new MenuBar();
         Menu menu = new Menu(i18n.getString("file"));
         MenuItem exitItem = new MenuItem(i18n.getString("exit"));
-        exitItem.setOnAction(actionEvent -> Platform.exit());
+        exitItem.setOnAction(_ -> Platform.exit());
         menu.getItems().add(exitItem);
         menubar.getMenus().add(menu);
 
@@ -102,15 +116,17 @@ public class MainWindow {
         outputDirLayout.getChildren().add(outputDirLabel);
 
         outputDirField = new TextField();
-        String tmpdir = System.getProperty("java.io.tmpdir");
-        outputDirField.setText(tmpdir);
+        String homeDirectory = System.getProperty("user.home");
+        outputDirField.setText(homeDirectory);
         outputDirLayout.getChildren().add(outputDirField);
         HBox.setHgrow(outputDirField, Priority.ALWAYS);
 
         Button outputDirButton = new Button();
-        ImageView folderOpenIcon = new ImageView(getClass().getResource("/icons/heroicons/folder-open.png").toExternalForm());
+        String buttonIcon = Objects.requireNonNull(getClass().getResource("/icons/heroicons/folder-open.png"))
+                .toExternalForm();
+        ImageView folderOpenIcon = new ImageView(buttonIcon);
         outputDirButton.setGraphic(folderOpenIcon);
-        outputDirButton.setOnAction(e -> selectOutputDir());
+        outputDirButton.setOnAction(_ -> selectOutputDir());
         outputDirLayout.getChildren().add(outputDirButton);
 
         return outputDirLayout;
@@ -144,6 +160,21 @@ public class MainWindow {
 
     }
 
+    private void addFiles() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle(i18n.getString("select_pdf_files"));
+        List<File> selectedFiles = chooser.showOpenMultipleDialog(stage);
+        if (!selectedFiles.isEmpty()) {
+            selectedFiles.forEach(file -> {
+                String absolutePath = file.getAbsolutePath();
+                if(!dropArea.getItems().contains(absolutePath)) {
+                    dropArea.getItems().add(absolutePath);
+                }
+            });
+        }
+    }
+
+
     private void selectOutputDir() {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle(i18n.getString("choose_dest_folder"));
@@ -167,40 +198,43 @@ public class MainWindow {
             return;
         }
 
-        DirectoryUtils.ensureDirExists(outputDir);
+        if(DirectoryUtils.ensureDirExists(outputDir)) {
 
-        List<String> convertedFiles = new ArrayList<>();
-        List<String> failedFiles = new ArrayList<>();
+            List<String> convertedFiles = new ArrayList<>();
+            List<String> failedFiles = new ArrayList<>();
 
-        for (String inputPath : dropArea.getItems()) {
-            String filename = new File(inputPath).getName();
-            String outputPath = new File(outputDir, "pdfa2b_" + filename).getAbsolutePath();
+            for (String inputPath : dropArea.getItems()) {
+                String filename = new File(inputPath).getName();
+                String outputPath = new File(outputDir, "pdfa2b_" + filename).getAbsolutePath();
 
-            try {
-                PDFAStandard standardSelection = PDFAStandard.getEnumForValue(standardChoiceBox.getValue());
-                converter.convertToPDFA(inputPath, outputPath, standardSelection);
-                convertedFiles.add(filename);
-            } catch (Exception e) {
-                failedFiles.add(filename + ": " + e.getMessage());
+                try {
+                    PDFAStandard standardSelection = PDFAStandard.getEnumForValue(standardChoiceBox.getValue());
+                    converter.convertToPDFA(inputPath, outputPath, standardSelection);
+                    convertedFiles.add(filename);
+                } catch (Exception e) {
+                    failedFiles.add(filename + ": " + e.getMessage());
+                }
             }
-        }
 
-        String message = i18n.getString("converted_successfully")+": " + convertedFiles.size() + "\n";
-        if (!failedFiles.isEmpty()) {
-            message += "\n"
-                    + i18n.getString("error_in")
-                    + " "
-                    + failedFiles.size()
-                    + " "
-                    + i18n.getString("files")
-                    + ":\n"
-                    + String.join("\n", failedFiles);
-        }
+            String message = i18n.getString("converted_successfully") + ": " + convertedFiles.size() + "\n";
+            if (!failedFiles.isEmpty()) {
+                message += "\n"
+                        + i18n.getString("error_in")
+                        + " "
+                        + failedFiles.size()
+                        + " "
+                        + i18n.getString("files")
+                        + ":\n"
+                        + String.join("\n", failedFiles);
+            }
 
-        showAlert(i18n.getString("convertion_finished"), message);
-        dropArea.getItems().clear();
-        statusLabel.setText(i18n.getString("drag_files_into_list"));
-        convertButton.setDisable(true);
+            showAlert(i18n.getString("convertion_finished"), message);
+            dropArea.getItems().clear();
+            statusLabel.setText(i18n.getString("drag_files_into_list"));
+            convertButton.setDisable(true);
+        } else {
+            throw new IllegalArgumentException("Selected output directory is not accessible. Output directory: " + outputDir);
+        }
     }
 
     private void showAlert(String title, String content) {

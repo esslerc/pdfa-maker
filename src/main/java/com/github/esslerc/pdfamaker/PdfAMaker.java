@@ -26,7 +26,7 @@ public class PdfAMaker extends Application {
         DocumentSaver documentSaver = new FileDocumentSaver();
         XmpMetadataCreator xmpMetadataCreator = new DefaultXmpMetadataCreator();
 
-        Locale locale = new Locale("de", "DE");
+        Locale locale = Locale.of("de", "DE");
         ResourceBundle i18n = ResourceBundle.getBundle("messages", locale);
 
 
