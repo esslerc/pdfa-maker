@@ -3,21 +3,26 @@ package com.github.esslerc.pdfamaker.ui;
 import com.github.esslerc.pdfamaker.service.PDFAStandard;
 import com.github.esslerc.pdfamaker.service.impl.PDFAService;
 import com.github.esslerc.pdfamaker.ui.widgets.DropArea;
+import com.github.esslerc.pdfamaker.ui.widgets.OutputDirectoryWidget;
+import com.github.esslerc.pdfamaker.ui.widgets.PDFAStandardWidget;
+import com.github.esslerc.pdfamaker.ui.widgets.SettingsDialog;
 import com.github.esslerc.pdfamaker.util.DirectoryUtils;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.stage.DirectoryChooser;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class MainWindow {
     private final ResourceBundle i18n;
@@ -27,8 +32,8 @@ public class MainWindow {
     private Label statusLabel;
     private Button addButton;
     private Button convertButton;
-    private TextField outputDirField;
-    private ChoiceBox<String> standardChoiceBox;
+    private OutputDirectoryWidget outputDirectoryWidget;
+    private PDFAStandardWidget pdfaStandardWidget;
 
     public MainWindow(PDFAService converter, Stage stage, ResourceBundle i18n) {
         this.converter = converter;
@@ -61,8 +66,13 @@ public class MainWindow {
         layout.getChildren().add(buttonLayout);
 
         VBox advancedOptionsLayout = new VBox(10);
-        advancedOptionsLayout.getChildren().add(getOutputDirLayout());
-        advancedOptionsLayout.getChildren().add(getConvertionOptionsLayout());
+
+        outputDirectoryWidget = new OutputDirectoryWidget(stage, i18n);
+        advancedOptionsLayout.getChildren().add(outputDirectoryWidget.getWidget());
+
+        pdfaStandardWidget = new PDFAStandardWidget(i18n);
+        advancedOptionsLayout.getChildren().add(pdfaStandardWidget.getWidget());
+
         TitledPane optionsPane = new TitledPane(i18n.getString("advanced_options"), advancedOptionsLayout);
         optionsPane.setExpanded(false);
 
@@ -89,7 +99,7 @@ public class MainWindow {
 
     private void initializeDropArea() {
         dropArea = new DropArea(i18n);
-        dropArea.getItems().addListener((ListChangeListener.Change<? extends String> change)-> updateStatus());
+        dropArea.getItems().addListener((ListChangeListener.Change<? extends String> _)-> updateStatus());
     }
 
     private void initializeStatusLabel() {
@@ -98,9 +108,16 @@ public class MainWindow {
 
     private MenuBar createMenuBar() {
         MenuBar menubar = new MenuBar();
+
         Menu menu = new Menu(i18n.getString("file"));
+
+        MenuItem settingsItem = new MenuItem(i18n.getString("settings"));
+        settingsItem.setOnAction(_ -> openSettingsDialog());
+
         MenuItem exitItem = new MenuItem(i18n.getString("exit"));
         exitItem.setOnAction(_ -> Platform.exit());
+
+        menu.getItems().add(settingsItem);
         menu.getItems().add(exitItem);
         menubar.getMenus().add(menu);
 
@@ -110,43 +127,10 @@ public class MainWindow {
         return menubar;
     }
 
-    private Pane getOutputDirLayout() {
-        HBox outputDirLayout = new HBox(10);
+    private void openSettingsDialog() {
+        SettingsDialog settingsDialog = new SettingsDialog(i18n);
+        settingsDialog.showAndWait();
 
-        Label outputDirLabel = new Label(i18n.getString("dest_folder"));
-        outputDirLayout.getChildren().add(outputDirLabel);
-
-        outputDirField = new TextField();
-        String homeDirectory = System.getProperty("user.home");
-        outputDirField.setText(homeDirectory);
-        outputDirLayout.getChildren().add(outputDirField);
-        HBox.setHgrow(outputDirField, Priority.ALWAYS);
-
-        Button outputDirButton = new Button();
-        String buttonIcon = Objects.requireNonNull(getClass().getResource("/icons/heroicons/folder-open.png"))
-                .toExternalForm();
-        ImageView folderOpenIcon = new ImageView(buttonIcon);
-        outputDirButton.setGraphic(folderOpenIcon);
-        outputDirButton.setOnAction(_ -> selectOutputDir());
-        outputDirLayout.getChildren().add(outputDirButton);
-
-        return outputDirLayout;
-    }
-
-    private Pane getConvertionOptionsLayout() {
-        HBox convertionOptionsLayout = new HBox(10);
-
-        Label outputDirLabel = new Label(i18n.getString("dest_format"));
-        convertionOptionsLayout.getChildren().add(outputDirLabel);
-
-        standardChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(
-                Arrays.stream(PDFAStandard.values()).map(PDFAStandard::getLabel).toList())
-        );
-        standardChoiceBox.setStyle("-fx-z");
-        standardChoiceBox.setValue(PDFAStandard.PDFA_2b.getLabel());
-        convertionOptionsLayout.getChildren().add(standardChoiceBox);
-
-        return convertionOptionsLayout;
     }
 
     private void updateStatus() {
@@ -175,18 +159,8 @@ public class MainWindow {
         }
     }
 
-
-    private void selectOutputDir() {
-        DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle(i18n.getString("choose_dest_folder"));
-        File selectedDir = chooser.showDialog(stage);
-        if (selectedDir != null) {
-            outputDirField.setText(selectedDir.getAbsolutePath());
-        }
-    }
-
     private void convertFiles() {
-        String outputDir = outputDirField.getText();
+        String outputDir = outputDirectoryWidget.getOutputDirectoryField().getText();
         String warning = i18n.getString("warning");
 
         if (dropArea.getItems().isEmpty()) {
@@ -209,7 +183,7 @@ public class MainWindow {
                 String outputPath = new File(outputDir, "pdfa2b_" + filename).getAbsolutePath();
 
                 try {
-                    PDFAStandard standardSelection = PDFAStandard.getEnumForValue(standardChoiceBox.getValue());
+                    PDFAStandard standardSelection = PDFAStandard.getEnumForValue(pdfaStandardWidget.getPDFAStandardChoiceBox().getValue());
                     converter.convertToPDFA(inputPath, outputPath, standardSelection);
                     convertedFiles.add(filename);
                 } catch (Exception e) {
