@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class SettingsDialog  {
@@ -18,6 +19,7 @@ public class SettingsDialog  {
     private final ResourceBundle i18n;
     private final OutputDirectoryWidget outputDirectoryWidget;
     private final PDFAStandardWidget pdfaStandardWidget;
+    private final LocaleWidget localeWidget;
     private final ConfigService configService;
 
     public SettingsDialog(ResourceBundle i18n) {
@@ -26,8 +28,9 @@ public class SettingsDialog  {
 
         dialogStage = new Stage();
 
-        pdfaStandardWidget = new PDFAStandardWidget(i18n);
-        outputDirectoryWidget = new OutputDirectoryWidget(dialogStage, i18n);
+        pdfaStandardWidget = new PDFAStandardWidget(i18n, configService);
+        outputDirectoryWidget = new OutputDirectoryWidget(dialogStage, i18n, configService);
+        localeWidget = new LocaleWidget(i18n, configService);
 
         initDialog();
     }
@@ -44,15 +47,21 @@ public class SettingsDialog  {
 
         GridPane.setConstraints(pdfaStandardWidget.getWidget(), 0, 0);
         GridPane.setConstraints(outputDirectoryWidget.getWidget(), 0, 1);
+        GridPane.setConstraints(localeWidget.getWidget(), 0, 2);
 
-        Button saveButton = new Button("Speichern");
-        saveButton.setOnAction(e -> saveSettings());
+        Button saveButton = new Button(i18n.getString("save"));
+        saveButton.setOnAction(_ -> saveSettings());
 
-        GridPane.setConstraints(saveButton, 0, 2);
+        GridPane.setConstraints(saveButton, 0, 3);
 
-        gridPane.getChildren().addAll(pdfaStandardWidget.getWidget(), outputDirectoryWidget.getWidget(), saveButton);
+        gridPane.getChildren().addAll(
+                pdfaStandardWidget.getWidget(),
+                outputDirectoryWidget.getWidget(),
+                localeWidget.getWidget(),
+                saveButton
+        );
 
-        Scene scene = new Scene(gridPane, 640, 480);
+        Scene scene = new Scene(gridPane, 480, 280);
         dialogStage.setScene(scene);
 
     }
@@ -65,10 +74,12 @@ public class SettingsDialog  {
     private void saveSettings() {
         String pdfaStandardValue = pdfaStandardWidget.getPDFAStandardChoiceBox().getSelectionModel().getSelectedItem();
         String outputPath = outputDirectoryWidget.getOutputDirectoryField().getText();
+        String language = localeWidget.getLanguageChoiceBox().getSelectionModel().getSelectedItem();
 
         AppConfig appConfig = configService.getAppConfig();
         appConfig.setPdfaStandard(PDFAStandard.getEnumForValue(pdfaStandardValue));
         appConfig.setOutputPath(outputPath);
+        appConfig.setLocale(Locale.of(language));
 
         configService.saveProperties();
         configService.savePropertiesFromBean();

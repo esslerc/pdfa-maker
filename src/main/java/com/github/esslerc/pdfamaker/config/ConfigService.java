@@ -3,6 +3,7 @@ package com.github.esslerc.pdfamaker.config;
 import com.github.esslerc.pdfamaker.service.PDFAStandard;
 
 import java.io.*;
+import java.util.Locale;
 import java.util.Properties;
 import java.lang.reflect.Field;
 
@@ -65,8 +66,11 @@ public class ConfigService {
                 field.setAccessible(true);
                 try {
                     String value = properties.getProperty(key);
-                    if (field.getType() == PDFAStandard.class) {
+
+                    if (field.getType().equals(PDFAStandard.class)) {
                         field.set(appConfig, PDFAStandard.getEnumForValue(value));
+                    } else if (field.getType().equals(Locale.class)) {
+                        field.set(appConfig, Locale.of(value));
                     } else {
                         field.set(appConfig, value);
                     }
@@ -86,6 +90,9 @@ public class ConfigService {
                     if(field.getType() == PDFAStandard.class) {
                         PDFAStandard pdfaStandard = (PDFAStandard) value;
                         properties.setProperty(field.getName(), pdfaStandard.getLabel());
+                    } else if (field.getType().equals(Locale.class)) {
+                        Locale locale = (Locale) value;
+                        properties.setProperty(field.getName(), locale.getLanguage());
                     } else {
                         properties.setProperty(field.getName(), value.toString());
                     }

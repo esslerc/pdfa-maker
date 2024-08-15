@@ -1,5 +1,6 @@
 package com.github.esslerc.pdfamaker.ui.widgets;
 
+import com.github.esslerc.pdfamaker.config.ConfigService;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -18,25 +19,32 @@ public class OutputDirectoryWidget implements PDFAAppWidget {
 
     private final Stage stage;
     private final ResourceBundle i18n;
+    private final ConfigService configService;
     private TextField outputDirField;
     private HBox outputDirLayout;
 
-    public OutputDirectoryWidget(Stage stage, ResourceBundle i18n) {
+    public OutputDirectoryWidget(Stage stage,
+                                 ResourceBundle i18n,
+                                 ConfigService configService
+    ) {
         this.stage = stage;
         this.i18n = i18n;
+        this.configService = configService;
 
-        initWidget();
+        init();
     }
 
-    private void initWidget() {
+    private void init() {
         outputDirLayout = new HBox(10);
 
         Label outputDirLabel = new Label(i18n.getString("dest_folder"));
         outputDirLayout.getChildren().add(outputDirLabel);
 
         outputDirField = new TextField();
-        String homeDirectory = System.getProperty("user.home");
-        outputDirField.setText(homeDirectory);
+
+        String outputDirectoryPath = configService.getAppConfig().getOutputPath() == null ? System.getProperty("user.home") : configService.getAppConfig().getOutputPath();
+        outputDirField.setText(outputDirectoryPath);
+
         outputDirLayout.getChildren().add(outputDirField);
         HBox.setHgrow(outputDirField, Priority.ALWAYS);
 

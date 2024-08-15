@@ -1,5 +1,6 @@
 package com.github.esslerc.pdfamaker;
 
+import com.github.esslerc.pdfamaker.config.ConfigService;
 import com.github.esslerc.pdfamaker.service.DocumentLoader;
 import com.github.esslerc.pdfamaker.service.DocumentSaver;
 import com.github.esslerc.pdfamaker.service.XmpMetadataCreator;
@@ -22,20 +23,21 @@ import java.util.ResourceBundle;
 public class PdfAMaker extends Application {
     @Override
     public void start(Stage primaryStage) {
+
         DocumentLoader documentLoader = new FileDocumentLoader();
         DocumentSaver documentSaver = new FileDocumentSaver();
         XmpMetadataCreator xmpMetadataCreator = new DefaultXmpMetadataCreator();
+        ConfigService configService = new ConfigService();
 
-        Locale locale = Locale.of("de", "DE");
+        Locale locale = configService.getAppConfig().getLocale() == null ? Locale.getDefault() : configService.getAppConfig().getLocale();
         ResourceBundle i18n = ResourceBundle.getBundle("messages", locale);
-
 
         PDFAService converter = new PDFAService(documentLoader, documentSaver, xmpMetadataCreator);
 
         InputStream appIcon = Objects.requireNonNull(getClass().getResourceAsStream("/icons/heroicons/document-check.png"));
         primaryStage.getIcons().add(new Image(appIcon));
 
-        new MainWindow(converter, primaryStage, i18n);
+        new MainWindow(converter, configService, primaryStage, i18n);
 
         Screen primaryScreen = Screen.getPrimary();
         Rectangle2D primaryBounds = primaryScreen.getVisualBounds();

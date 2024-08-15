@@ -1,5 +1,6 @@
 package com.github.esslerc.pdfamaker.ui;
 
+import com.github.esslerc.pdfamaker.config.ConfigService;
 import com.github.esslerc.pdfamaker.service.PDFAStandard;
 import com.github.esslerc.pdfamaker.service.impl.PDFAService;
 import com.github.esslerc.pdfamaker.ui.widgets.DropArea;
@@ -27,6 +28,7 @@ import java.util.ResourceBundle;
 public class MainWindow {
     private final ResourceBundle i18n;
     private final PDFAService converter;
+    private final ConfigService configService;
     private final Stage stage;
     private DropArea dropArea;
     private Label statusLabel;
@@ -35,15 +37,20 @@ public class MainWindow {
     private OutputDirectoryWidget outputDirectoryWidget;
     private PDFAStandardWidget pdfaStandardWidget;
 
-    public MainWindow(PDFAService converter, Stage stage, ResourceBundle i18n) {
+    public MainWindow(PDFAService converter,
+                      ConfigService configService,
+                      Stage stage,
+                      ResourceBundle i18n
+    ) {
         this.converter = converter;
+        this.configService = configService;
         this.stage = stage;
         this.i18n = i18n;
 
-        initUI();
+        init();
     }
 
-    private void initUI() {
+    private void init() {
         stage.setTitle(i18n.getString("app_title"));
 
         BorderPane mainPane = new BorderPane();
@@ -67,10 +74,10 @@ public class MainWindow {
 
         VBox advancedOptionsLayout = new VBox(10);
 
-        outputDirectoryWidget = new OutputDirectoryWidget(stage, i18n);
+        outputDirectoryWidget = new OutputDirectoryWidget(stage, i18n, configService);
         advancedOptionsLayout.getChildren().add(outputDirectoryWidget.getWidget());
 
-        pdfaStandardWidget = new PDFAStandardWidget(i18n);
+        pdfaStandardWidget = new PDFAStandardWidget(i18n, configService);
         advancedOptionsLayout.getChildren().add(pdfaStandardWidget.getWidget());
 
         TitledPane optionsPane = new TitledPane(i18n.getString("advanced_options"), advancedOptionsLayout);

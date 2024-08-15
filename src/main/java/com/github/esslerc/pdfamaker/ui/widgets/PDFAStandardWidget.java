@@ -1,5 +1,6 @@
 package com.github.esslerc.pdfamaker.ui.widgets;
 
+import com.github.esslerc.pdfamaker.config.ConfigService;
 import com.github.esslerc.pdfamaker.service.PDFAStandard;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
@@ -14,26 +15,31 @@ public class PDFAStandardWidget implements PDFAAppWidget {
 
     private final ResourceBundle i18n;
     private final ChoiceBox<String> pdfaStandardChoiceBox;
+    private final ConfigService configService;
     private HBox pdfaStandardLayout;
 
-    public PDFAStandardWidget(ResourceBundle i18n) {
+    public PDFAStandardWidget(ResourceBundle i18n,
+                              ConfigService configService) {
         this.i18n = i18n;
 
         this.pdfaStandardChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(
                 Arrays.stream(PDFAStandard.values()).map(PDFAStandard::getLabel).toList())
         );
 
-        initWidget();
+        this.configService = configService;
+
+        init();
     }
 
-    private void initWidget() {
+    private void init() {
         pdfaStandardLayout = new HBox(10);
 
         Label outputDirLabel = new Label(i18n.getString("pdfa_standard"));
         pdfaStandardLayout.getChildren().add(outputDirLabel);
 
-        pdfaStandardChoiceBox.setStyle("-fx-z");
-        pdfaStandardChoiceBox.setValue(PDFAStandard.PDFA_2b.getLabel());
+        String pdfaStandard = configService.getAppConfig().getPdfaStandard() == null ? PDFAStandard.PDFA_2b.getLabel() : configService.getAppConfig().getPdfaStandard().getLabel();
+        pdfaStandardChoiceBox.setValue(pdfaStandard);
+
         pdfaStandardLayout.getChildren().add(pdfaStandardChoiceBox);
     }
 
