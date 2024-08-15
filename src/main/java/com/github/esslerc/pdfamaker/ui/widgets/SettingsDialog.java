@@ -6,7 +6,7 @@ import com.github.esslerc.pdfamaker.service.PDFAStandard;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -40,28 +40,19 @@ public class SettingsDialog  {
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.setTitle(i18n.getString("settings"));
 
-        GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(10));
-        gridPane.setVgap(8);
-        gridPane.setHgap(10);
-
-        GridPane.setConstraints(pdfaStandardWidget.getWidget(), 0, 0);
-        GridPane.setConstraints(outputDirectoryWidget.getWidget(), 0, 1);
-        GridPane.setConstraints(localeWidget.getWidget(), 0, 2);
-
         Button saveButton = new Button(i18n.getString("save"));
         saveButton.setOnAction(_ -> saveSettings());
 
-        GridPane.setConstraints(saveButton, 0, 3);
-
-        gridPane.getChildren().addAll(
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(20));
+        vbox.getChildren().addAll(
                 pdfaStandardWidget.getWidget(),
                 outputDirectoryWidget.getWidget(),
                 localeWidget.getWidget(),
                 saveButton
         );
 
-        Scene scene = new Scene(gridPane, 480, 280);
+        Scene scene = new Scene(vbox, 480, 200);
         dialogStage.setScene(scene);
 
     }

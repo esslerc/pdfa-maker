@@ -13,6 +13,7 @@ import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -95,11 +96,19 @@ public class MainWindow {
 
     private void initializeAddButton() {
         addButton = new Button(i18n.getString("add"));
+        String buttonIcon = Objects.requireNonNull(getClass().getResource("/icons/heroicons/add.png"))
+                .toExternalForm();
+        ImageView addIcon = new ImageView(buttonIcon);
+        addButton.setGraphic(addIcon);
         addButton.setOnAction(_ -> addFiles());
     }
 
     private void initializeConvertButton() {
         convertButton = new Button(i18n.getString("convert_to_pdfa"));
+        String buttonIcon = Objects.requireNonNull(getClass().getResource("/icons/heroicons/play.png"))
+                .toExternalForm();
+        ImageView playIcon = new ImageView(buttonIcon);
+        convertButton.setGraphic(playIcon);
         convertButton.setOnAction(_ -> convertFiles());
         convertButton.setDisable(true);
     }
