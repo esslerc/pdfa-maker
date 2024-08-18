@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -45,11 +46,15 @@ public class AboutDialog {
             Label title = new Label("PDF/A-Maker - Version " + appVersion);
             titleVbox.getChildren().add(title);
 
-            Hyperlink link = new Hyperlink("PDF/A-Maker on Github");
+            Hyperlink link = new Hyperlink(i18n.getString("PDF_A_Maker_on_Github"));
             link.setOnAction(_ -> {
                 hostServices.showDocument("https://github.com/esslerc/pdfa-maker");
             });
             titleVbox.getChildren().add(link);
+
+            Text description = new Text(i18n.getString("aboutContent"));
+            description.setWrappingWidth(600);
+            titleVbox.getChildren().add(description);
 
             borderPane.setTop(titleVbox);
 
