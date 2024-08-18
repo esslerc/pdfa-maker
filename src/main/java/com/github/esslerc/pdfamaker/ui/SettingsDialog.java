@@ -1,8 +1,11 @@
-package com.github.esslerc.pdfamaker.ui.widgets;
+package com.github.esslerc.pdfamaker.ui;
 
 import com.github.esslerc.pdfamaker.config.AppConfig;
 import com.github.esslerc.pdfamaker.config.ConfigService;
 import com.github.esslerc.pdfamaker.service.PDFAStandard;
+import com.github.esslerc.pdfamaker.ui.widgets.LocaleWidget;
+import com.github.esslerc.pdfamaker.ui.widgets.OutputDirectoryWidget;
+import com.github.esslerc.pdfamaker.ui.widgets.PDFAStandardWidget;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,10 +35,10 @@ public class SettingsDialog  {
         outputDirectoryWidget = new OutputDirectoryWidget(dialogStage, i18n, configService);
         localeWidget = new LocaleWidget(i18n, configService);
 
-        initDialog();
+        init();
     }
 
-    private void initDialog() {
+    private void init() {
 
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.setTitle(i18n.getString("settings"));

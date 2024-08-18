@@ -3,11 +3,10 @@ package com.github.esslerc.pdfamaker.ui;
 import com.github.esslerc.pdfamaker.config.ConfigService;
 import com.github.esslerc.pdfamaker.service.PDFAStandard;
 import com.github.esslerc.pdfamaker.service.impl.PDFAService;
-import com.github.esslerc.pdfamaker.ui.widgets.DropArea;
-import com.github.esslerc.pdfamaker.ui.widgets.OutputDirectoryWidget;
-import com.github.esslerc.pdfamaker.ui.widgets.PDFAStandardWidget;
-import com.github.esslerc.pdfamaker.ui.widgets.SettingsDialog;
+import com.github.esslerc.pdfamaker.ui.credits.CreditsDialog;
+import com.github.esslerc.pdfamaker.ui.widgets.*;
 import com.github.esslerc.pdfamaker.util.DirectoryUtils;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
@@ -31,6 +30,7 @@ public class MainWindow {
     private final PDFAService converter;
     private final ConfigService configService;
     private final Stage stage;
+    private final HostServices hostServices;
     private DropArea dropArea;
     private Label statusLabel;
     private Button addButton;
@@ -41,12 +41,14 @@ public class MainWindow {
     public MainWindow(PDFAService converter,
                       ConfigService configService,
                       Stage stage,
-                      ResourceBundle i18n
+                      ResourceBundle i18n,
+                      HostServices hostServices
     ) {
         this.converter = converter;
         this.configService = configService;
         this.stage = stage;
         this.i18n = i18n;
+        this.hostServices = hostServices;
 
         init();
     }
@@ -125,7 +127,18 @@ public class MainWindow {
     private MenuBar createMenuBar() {
         MenuBar menubar = new MenuBar();
 
-        Menu menu = new Menu(i18n.getString("file"));
+        menubar.getMenus().add(createFileMenu());
+        menubar.getMenus().add(createHelpMenu());
+
+        if(isMacOS()) {
+            menubar.setUseSystemMenuBar(true);
+        }
+
+        return menubar;
+    }
+
+    private Menu createFileMenu() {
+        Menu fileMenu = new Menu(i18n.getString("file"));
 
         MenuItem settingsItem = new MenuItem(i18n.getString("settings"));
         settingsItem.setOnAction(_ -> openSettingsDialog());
@@ -133,19 +146,45 @@ public class MainWindow {
         MenuItem exitItem = new MenuItem(i18n.getString("exit"));
         exitItem.setOnAction(_ -> Platform.exit());
 
-        menu.getItems().add(settingsItem);
-        menu.getItems().add(exitItem);
-        menubar.getMenus().add(menu);
+        fileMenu.getItems().add(settingsItem);
+        fileMenu.getItems().add(new SeparatorMenuItem());
+        fileMenu.getItems().add(exitItem);
+        return fileMenu;
+    }
 
-        String os = System.getProperty("os.name");
-        if(os != null && os.startsWith("Mac"))
-            menubar.setUseSystemMenuBar(true);
-        return menubar;
+    private Menu createHelpMenu() {
+        Menu helpMenu = new Menu(i18n.getString("help"));
+
+        MenuItem licenseItem = new MenuItem(i18n.getString("credits"));
+        licenseItem.setOnAction(_ -> openLicensesDialog());
+        helpMenu.getItems().add(licenseItem);
+
+        MenuItem aboutItem = new MenuItem(i18n.getString("about"));
+        aboutItem.setOnAction(_ -> openAboutDialog());
+        helpMenu.getItems().add(aboutItem);
+
+        return helpMenu;
+    }
+
+    private boolean isMacOS() {
+        String osName = System.getProperty("os.name").toLowerCase();
+        return osName.contains("mac");
+    }
+
+    private void openAboutDialog() {
+        AboutDialog aboutDialog = new AboutDialog(i18n, hostServices);
+        aboutDialog.showAndWait();
     }
 
     private void openSettingsDialog() {
         SettingsDialog settingsDialog = new SettingsDialog(i18n);
         settingsDialog.showAndWait();
+
+    }
+
+    private void openLicensesDialog() {
+        CreditsDialog creditsDialog = new CreditsDialog(i18n);
+        creditsDialog.showAndWait();
 
     }
 

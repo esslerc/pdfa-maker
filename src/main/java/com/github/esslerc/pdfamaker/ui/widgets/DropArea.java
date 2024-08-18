@@ -37,7 +37,7 @@ public class DropArea extends ListView<String> {
     private void addContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem deleteMenuItem = new MenuItem(i18n.getString("delete"));
-        deleteMenuItem.setOnAction(event -> {
+        deleteMenuItem.setOnAction(_ -> {
             String selectedItem = super.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
                 super.getItems().remove(selectedItem);
