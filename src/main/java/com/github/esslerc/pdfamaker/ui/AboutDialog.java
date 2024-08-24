@@ -13,9 +13,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class AboutDialog {
 
@@ -60,11 +63,19 @@ public class AboutDialog {
 
             TextArea licenseArea = new TextArea();
 
-            String licenseContent = Files.readString(Paths.get("LICENSE").toAbsolutePath());
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("LICENSE");
+
+            if (inputStream == null) {
+                throw new FileNotFoundException("License file not found");
+            }
+
+
             licenseArea.setWrapText(true);
             licenseArea.setEditable(false);
-            licenseArea.setText(licenseContent);
 
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                licenseArea.setText(reader.lines().collect(Collectors.joining(System.lineSeparator())));
+            }
             borderPane.setCenter(licenseArea);
 
             Scene scene = new Scene(borderPane, 640, 480);

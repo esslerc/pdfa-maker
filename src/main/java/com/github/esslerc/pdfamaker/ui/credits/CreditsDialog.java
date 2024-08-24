@@ -11,17 +11,16 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class CreditsDialog {
 
@@ -58,18 +57,18 @@ public class CreditsDialog {
         AtomicReference<Credit> firstCredit = new AtomicReference<>();
 
         Arrays.stream(Credit.values()).forEach(item -> {
-                    if (firstCredit.get() == null) {
-                        firstCredit.set(item);
-                    }
-                    String licenseContent;
-                    try {
-                        licenseContent = readLicenseFromFile(item.getLicenseFileName());
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                    creditMap.put(item, licenseContent);
-                    licensesList.getItems().add(item);
+             if (firstCredit.get() == null) {
+                    firstCredit.set(item);
                 }
+                String licenseContent;
+                try {
+                    licenseContent = readLicenseFromFile(item.getLicenseFileName());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                creditMap.put(item, licenseContent);
+                licensesList.getItems().add(item);
+            }
         );
         licensesList.setOnMouseClicked(_ -> updateLicenseArea(licensesList.getSelectionModel().getSelectedItem()));
         hbox.getChildren().add(licensesList);
@@ -91,16 +90,16 @@ public class CreditsDialog {
 
     }
 
-    private String readLicenseFromFile(String licenseFileName) throws URISyntaxException, IOException {
-        URL resource = getClass().getResource("/licenses/" + licenseFileName + ".txt");
+    private String readLicenseFromFile(String licenseFileName) throws IOException {
+        InputStream resourceStream = getClass().getResourceAsStream("/licenses/" + licenseFileName + ".txt");
 
-        if (resource == null) {
+        if (resourceStream == null) {
             throw new IllegalStateException("License file not found!");
         }
 
-        Path filePath = Paths.get(resource.toURI());
-        return Files.readString(filePath);
-
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resourceStream))) {
+            return reader.lines().collect(Collectors.joining(System.lineSeparator()));
+        }
     }
 
     private void updateLicenseArea(Credit item) {
