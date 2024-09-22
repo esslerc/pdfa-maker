@@ -1,4 +1,4 @@
-package com.github.esslerc.pdfamaker.ui.credits;
+package com.github.esslerc.pdfamaker.service;
 
 public enum Credit {
     APACHE_PDFBOX("Apache PDFBox", "Apache_License_2.0"),
@@ -10,8 +10,8 @@ public enum Credit {
     private final String creditName;
     private final String licenseFileName;
 
-    Credit(String creditName, String licenseFileName) {
-        this.creditName = creditName;
+    Credit(String licenseName, String licenseFileName) {
+        this.creditName = licenseName;
         this.licenseFileName = licenseFileName;
     }
 

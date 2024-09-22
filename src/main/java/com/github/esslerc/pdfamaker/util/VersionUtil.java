@@ -2,6 +2,7 @@ package com.github.esslerc.pdfamaker.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -12,7 +13,10 @@ public class VersionUtil {
             if (inputStream != null) {
                 Manifest manifest = new Manifest(inputStream);
                 Attributes attributes = manifest.getMainAttributes();
-                return attributes.getValue("Implementation-Version");
+
+                String implementationVersion =  attributes.getValue("Implementation-Version");
+
+                return Objects.requireNonNullElse(implementationVersion, "n.a.");
             } else {
                 return "Version information not found";
             }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefWidth="640" prefHeight="530"
+            stylesheets="@../css/application.css"
+            xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.github.esslerc.pdfamaker.controller.AboutController"
+            id="about-dialog">
+    <top>
+        <VBox>
+            <Label fx:id="titleLbl" styleClass="header-label"/>
+            <Hyperlink onAction="#openGithubLink" text="%PDF_A_Maker_on_Github" styleClass="about-hyperlink"/>
+            <Text text="%aboutContent" wrappingWidth="600"/>
+        </VBox>
+    </top>
+    <center>
+        <TextArea fx:id="licenseTextArea" editable="false" wrapText="true" />
+    </center>
+</BorderPane>

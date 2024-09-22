@@ -1,19 +1,14 @@
-package com.github.esslerc.pdfamaker.ui.widgets;
+package com.github.esslerc.pdfamaker.ui;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 
 import java.io.File;
-import java.util.ResourceBundle;
 
 public class DropArea extends ListView<String> {
 
-    private final ResourceBundle i18n;
-
-    public DropArea(ResourceBundle i18n) {
-        this.i18n = i18n;
-
+    public DropArea() {
         this.setOnDragOver(this::handleDragOver);
         this.setOnDragDropped(this::handleDragDropped);
         this.setStyle("-fx-border-color: #aaa; -fx-border-style: dashed; -fx-border-width: 2; -fx-background-color: #f0f0f0;");
@@ -36,7 +31,7 @@ public class DropArea extends ListView<String> {
 
     private void addContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem deleteMenuItem = new MenuItem(i18n.getString("delete"));
+        MenuItem deleteMenuItem = new MenuItem("delete");
         deleteMenuItem.setOnAction(_ -> {
             String selectedItem = super.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
