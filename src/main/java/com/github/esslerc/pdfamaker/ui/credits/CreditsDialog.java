@@ -70,7 +70,7 @@ public class CreditsDialog {
                 licensesList.getItems().add(item);
             }
         );
-        licensesList.setOnMouseClicked(_ -> updateLicenseArea(licensesList.getSelectionModel().getSelectedItem()));
+        licensesList.setOnMouseClicked(event -> updateLicenseArea(licensesList.getSelectionModel().getSelectedItem()));
         hbox.getChildren().add(licensesList);
 
         licensesList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);

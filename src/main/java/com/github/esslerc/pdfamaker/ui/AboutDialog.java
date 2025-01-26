@@ -50,7 +50,7 @@ public class AboutDialog {
             titleVbox.getChildren().add(title);
 
             Hyperlink link = new Hyperlink(i18n.getString("PDF_A_Maker_on_Github"));
-            link.setOnAction(_ -> {
+            link.setOnAction(action -> {
                 hostServices.showDocument("https://github.com/esslerc/pdfa-maker");
             });
             titleVbox.getChildren().add(link);

@@ -102,7 +102,7 @@ public class MainWindow {
                 .toExternalForm();
         ImageView addIcon = new ImageView(buttonIcon);
         addButton.setGraphic(addIcon);
-        addButton.setOnAction(_ -> addFiles());
+        addButton.setOnAction(event -> addFiles());
     }
 
     private void initializeConvertButton() {
@@ -111,13 +111,13 @@ public class MainWindow {
                 .toExternalForm();
         ImageView playIcon = new ImageView(buttonIcon);
         convertButton.setGraphic(playIcon);
-        convertButton.setOnAction(_ -> convertFiles());
+        convertButton.setOnAction(event -> convertFiles());
         convertButton.setDisable(true);
     }
 
     private void initializeDropArea() {
         dropArea = new DropArea(i18n);
-        dropArea.getItems().addListener((ListChangeListener.Change<? extends String> _)-> updateStatus());
+        dropArea.getItems().addListener((ListChangeListener.Change<? extends String> change)-> updateStatus());
     }
 
     private void initializeStatusLabel() {
@@ -141,10 +141,10 @@ public class MainWindow {
         Menu fileMenu = new Menu(i18n.getString("file"));
 
         MenuItem settingsItem = new MenuItem(i18n.getString("settings"));
-        settingsItem.setOnAction(_ -> openSettingsDialog());
+        settingsItem.setOnAction(event -> openSettingsDialog());
 
         MenuItem exitItem = new MenuItem(i18n.getString("exit"));
-        exitItem.setOnAction(_ -> Platform.exit());
+        exitItem.setOnAction(event -> Platform.exit());
 
         fileMenu.getItems().add(settingsItem);
         fileMenu.getItems().add(new SeparatorMenuItem());
@@ -156,11 +156,11 @@ public class MainWindow {
         Menu helpMenu = new Menu(i18n.getString("help"));
 
         MenuItem licenseItem = new MenuItem(i18n.getString("credits"));
-        licenseItem.setOnAction(_ -> openLicensesDialog());
+        licenseItem.setOnAction(event -> openLicensesDialog());
         helpMenu.getItems().add(licenseItem);
 
         MenuItem aboutItem = new MenuItem(i18n.getString("about"));
-        aboutItem.setOnAction(_ -> openAboutDialog());
+        aboutItem.setOnAction(event -> openAboutDialog());
         helpMenu.getItems().add(aboutItem);
 
         return helpMenu;

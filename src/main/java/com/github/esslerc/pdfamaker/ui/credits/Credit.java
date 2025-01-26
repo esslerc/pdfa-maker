@@ -4,8 +4,8 @@ public enum Credit {
     APACHE_PDFBOX("Apache PDFBox", "Apache_License_2.0"),
     APACHE_MAVEN("Apache Maven", "Apache_License_2.0"),
     JUNIT("JUnit5", "EPL-2.0"),
-    MOCKITO("mockito", "MIT_mockito"),
-    ECLIPSE_TEMURIN("Eclipse Temurin", "GPL_with_Classpath_Exception");
+    MOCKITO("mockito", "MIT_mockito");
+    // TODO Bellsoft Liberica License
 
     private final String creditName;
     private final String licenseFileName;

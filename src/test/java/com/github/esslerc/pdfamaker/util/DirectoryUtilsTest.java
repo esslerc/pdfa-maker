@@ -1,6 +1,8 @@
 package com.github.esslerc.pdfamaker.util;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -44,6 +46,7 @@ class DirectoryUtilsTest {
 
 
     @Test
+    @EnabledOnOs({OS.LINUX, OS.MAC})
     public void testDirectoryIsNotWritable() throws IOException {
         Path tmpDir = Files.createTempDirectory("pdfa-maker-test");
 

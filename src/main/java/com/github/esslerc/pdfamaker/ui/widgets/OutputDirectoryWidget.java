@@ -53,7 +53,7 @@ public class OutputDirectoryWidget implements PDFAAppWidget {
                 .toExternalForm();
         ImageView folderOpenIcon = new ImageView(buttonIcon);
         outputDirButton.setGraphic(folderOpenIcon);
-        outputDirButton.setOnAction(_ -> selectOutputDir());
+        outputDirButton.setOnAction(event -> selectOutputDir());
         outputDirLayout.getChildren().add(outputDirButton);
     }
 

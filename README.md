@@ -15,6 +15,10 @@ PDFA/A Maker creates PDF/A compliant files from PDF files. All PDF/A standards f
 
 This tool uses the Apache PDFBox library for creating PDF/A compliant files. For further information about Apache PDFBox please visit https://pdfbox.apache.org/
 
+## Requirements
+
+This application uses both JDK and JFX in LTS version 21. It is recommended to use a JDK distribution that already includes both. The recommendation here is BellSoft Liberica. Of course, any JDK distribution can be used, but it must be ensured that JFX is also available.
+
 ## License
 PDF/A Maker is published under MIT License
 

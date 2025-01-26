@@ -44,7 +44,7 @@ public class SettingsDialog  {
         dialogStage.setTitle(i18n.getString("settings"));
 
         Button saveButton = new Button(i18n.getString("save"));
-        saveButton.setOnAction(_ -> saveSettings());
+        saveButton.setOnAction(event -> saveSettings());
 
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(20));
