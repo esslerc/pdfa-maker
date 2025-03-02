@@ -7,25 +7,24 @@ Further information can be found on [Wikipedia](https://en.wikipedia.org/wiki/PD
 
 ## Features
 
-- Converts standard PDF files to PDF/A format
-- Simple JavaFX user interface to perform the migration
-- Supports the following standards:
-  - PDF/A-1B
-  - PDF/A-1A
-  - PDF/A-2B
-  - PDF/A-2U
-  - PDF/A-2A
-  - PDF/A-3
-  - PDF/A-4
-
-- Handles embedded fonts, images, and metadata to comply with PDF/A standards
+* Converts standard PDF files to PDF/A format
+* Simple JavaFX user interface to perform the migration
+* Supports the following standards:
+  * PDF/A-1B
+  * PDF/A-1A
+  * PDF/A-2B
+  * PDF/A-2U
+  * PDF/A-2A
+  * PDF/A-3
+  * PDF/A-4
+* Handles embedded fonts, images, and metadata to comply with PDF/A standards
 
 ## Prerequisites
 
-- Java 21 or higher
-- JavaFX 
-- Apache PDFBox 
-- Maven
+* Java 21 or higher
+* JavaFX 
+* Apache PDFBox 
+* Maven
 
 This app requires both Java and JFX version 21 or higher. It's recommended to use a JDK distribution that already includes both. The recommendation here is BellSoft Liberica. Of course, any JDK distribution can be used, but it must be ensured that JFX is also available.
 
