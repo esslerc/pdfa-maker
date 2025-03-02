@@ -23,7 +23,6 @@ Further information can be found on [Wikipedia](https://en.wikipedia.org/wiki/PD
 
 * Java 21 or higher
 * JavaFX 
-* Apache PDFBox 
 * Maven
 
 This app requires both Java and JFX version 21 or higher. It's recommended to use a JDK distribution that already includes both. The recommendation here is BellSoft Liberica. Of course, any JDK distribution can be used, but it must be ensured that JFX is also available.
