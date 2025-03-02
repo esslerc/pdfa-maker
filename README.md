@@ -1,23 +1,62 @@
 # PDF/A-Maker
 
-## PDF/A Standards
+This app converts PDF documents into PDF/A (archival PDF) format. PDF/A is a subset of the PDF format designed for long-term preservation of electronic documents, ensuring that documents can be reproduced exactly the same way in the future.
+Further information can be found on [Wikipedia](https://en.wikipedia.org/wiki/PDF/A).
 
-Wikipedia defines the PDF/A standard as follows:
->PDF/A is an ISO-standardized version of the Portable Document Format (PDF) specialized for use in the archiving and long-term preservation of electronic documents.
-PDF/A differs from PDF by prohibiting features unsuitable for long-term archiving, such as font linking (as opposed to font embedding) and encryption.
-The ISO requirements for PDF/A file viewers include color management guidelines, support for embedded fonts, and a user interface for reading embedded annotations. ...
+![pdfa-maker_main_window.png](doc/pdfa-maker_main_window.png)
 
-Wikipedia, The Free Encyclopedia. Accessed August 11, 2024. https://en.wikipedia.org/wiki/PDF/A.
+## Features
 
-## Description
+- Converts standard PDF files to PDF/A format
+- Simple JavaFX user interface to perform the migration
+- Supports the following standards:
+  - PDF/A-1B
+  - PDF/A-1A
+  - PDF/A-2B
+  - PDF/A-2U
+  - PDF/A-2A
+  - PDF/A-3
+  - PDF/A-4
 
-PDFA/A Maker creates PDF/A compliant files from PDF files. All PDF/A standards from PDF/A-1 to PDF/A-4 including their subtypes are supported.
+- Handles embedded fonts, images, and metadata to comply with PDF/A standards
 
-This tool uses the Apache PDFBox library for creating PDF/A compliant files. For further information about Apache PDFBox please visit https://pdfbox.apache.org/
+## Prerequisites
 
-## Requirements
+- Java 21 or higher
+- JavaFX 
+- Apache PDFBox 
+- Maven
 
-This application uses both JDK and JFX in LTS version 21. It is recommended to use a JDK distribution that already includes both. The recommendation here is BellSoft Liberica. Of course, any JDK distribution can be used, but it must be ensured that JFX is also available.
+This app requires both Java and JFX version 21 or higher. It's recommended to use a JDK distribution that already includes both. The recommendation here is BellSoft Liberica. Of course, any JDK distribution can be used, but it must be ensured that JFX is also available.
+
+## Installation
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/esslerc/pdfa-maker.git
+    ```
+
+2. Navigate to the project directory:
+
+    ```bash
+    cd pdfa-maker
+    ```
+
+3. Build the project with Maven:
+
+    ```bash
+    mvn clean install
+    ```
+
+## Usage
+
+After the installation step, the application can be started from the project directory using the following commands:
+
+```bash
+cd target
+java -jar pdfa-maker-1.0.0.jar
+```
 
 ## License
 PDF/A Maker is published under MIT License
