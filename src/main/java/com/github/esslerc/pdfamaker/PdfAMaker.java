@@ -34,9 +34,6 @@ public class PdfAMaker extends Application {
 
         PDFAService converter = new PDFAService(documentLoader, documentSaver, xmpMetadataCreator);
 
-        InputStream appIcon = Objects.requireNonNull(getClass().getResourceAsStream("/icons/heroicons/document-check.png"));
-        primaryStage.getIcons().add(new Image(appIcon));
-
         new MainWindow(converter, configService, primaryStage, i18n, getHostServices());
 
         Screen primaryScreen = Screen.getPrimary();

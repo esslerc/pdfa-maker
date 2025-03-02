@@ -1,5 +1,6 @@
 package com.github.esslerc.pdfamaker.ui;
 
+import com.github.esslerc.pdfamaker.config.ConfigService;
 import com.github.esslerc.pdfamaker.util.VersionUtil;
 import javafx.application.HostServices;
 import javafx.geometry.Insets;
@@ -29,8 +30,10 @@ public class AboutDialog {
     public AboutDialog(ResourceBundle i18n, HostServices hostServices) {
         this.i18n = i18n;
         this.hostServices = hostServices;
+        ConfigService configService = new ConfigService();
 
         dialogStage = new Stage();
+        configService.setStageAppIcon(dialogStage);
 
         init();
     }

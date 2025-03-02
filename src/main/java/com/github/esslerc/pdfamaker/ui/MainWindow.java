@@ -55,6 +55,7 @@ public class MainWindow {
 
     private void init() {
         stage.setTitle(i18n.getString("app_title"));
+        configService.setStageAppIcon(stage);
 
         BorderPane mainPane = new BorderPane();
         mainPane.setTop(createMenuBar());

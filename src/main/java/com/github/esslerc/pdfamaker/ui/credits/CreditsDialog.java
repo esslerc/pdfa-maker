@@ -1,5 +1,6 @@
 package com.github.esslerc.pdfamaker.ui.credits;
 
+import com.github.esslerc.pdfamaker.config.ConfigService;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -35,7 +36,10 @@ public class CreditsDialog {
 
         this.creditMap = new HashMap<>();
 
+        ConfigService configService = new ConfigService();
+
         dialogStage = new Stage();
+        configService.setStageAppIcon(dialogStage);
 
         init();
     }

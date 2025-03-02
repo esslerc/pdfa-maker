@@ -1,9 +1,12 @@
 package com.github.esslerc.pdfamaker.config;
 
 import com.github.esslerc.pdfamaker.service.PDFAStandard;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Properties;
 import java.lang.reflect.Field;
 
@@ -102,6 +105,19 @@ public class ConfigService {
             }
         }
         saveProperties();
+    }
+
+    public void setStageAppIcon(Stage stage) {
+        stage.getIcons().addAll(
+                getImage("/icons/app_icons/png/pdfa_maker_logo-16.png"),
+                getImage("/icons/app_icons/png/pdfa_maker_logo-32.png"),
+                getImage("/icons/app_icons/png/pdfa_maker_logo-48.png"),
+                getImage("/icons/app_icons/png/pdfa_maker_logo-128.png")
+        );
+    }
+
+    private Image getImage(String path) {
+        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
     }
 
     public AppConfig getAppConfig() {

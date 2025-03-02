@@ -30,6 +30,7 @@ public class SettingsDialog  {
         this.configService = new ConfigService();
 
         dialogStage = new Stage();
+        configService.setStageAppIcon(dialogStage);
 
         pdfaStandardWidget = new PDFAStandardWidget(i18n, configService);
         outputDirectoryWidget = new OutputDirectoryWidget(dialogStage, i18n, configService);
