@@ -1,4 +1,4 @@
-package com.github.esslerc.pdfamaker.ui.credits;
+package com.github.esslerc.pdfamaker.domain;
 
 public enum Credit {
     APACHE_PDFBOX("Apache PDFBox", "Apache_License_2.0"),

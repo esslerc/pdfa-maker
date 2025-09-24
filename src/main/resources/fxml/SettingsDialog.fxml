@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@../css/application.css" />
+    </stylesheets>
+    <center>
+        <GridPane hgap="16" vgap="16">
+            <padding>
+                <Insets bottom="24" left="24" right="24" top="24" />
+            </padding>
+            <Label text="%pdfa_standard" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <ComboBox fx:id="pdfaStandardComboBox" prefWidth="180" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <Label text="%dest_folder" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <HBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <TextField fx:id="directoryField" prefWidth="220" />
+                <Button fx:id="chooseFolderBtn" style="-fx-font-weight: bold;" text="..." />
+            </HBox>
+
+            <Label text="%language" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <ComboBox fx:id="languageComboBox" prefWidth="80" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="12">
+            <padding>
+                <Insets bottom="24" right="24" />
+            </padding>
+            <Button fx:id="saveBtn" prefWidth="100" text="%save" />
+        </HBox>
+    </bottom>
+</BorderPane>
