@@ -2,7 +2,7 @@ package com.github.esslerc.pdfamaker.service.impl;
 
 import com.github.esslerc.pdfamaker.service.DocumentLoader;
 import com.github.esslerc.pdfamaker.service.DocumentSaver;
-import com.github.esslerc.pdfamaker.service.PDFAStandard;
+import com.github.esslerc.pdfamaker.domain.PDFAStandard;
 import com.github.esslerc.pdfamaker.service.XmpMetadataCreator;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.common.PDMetadata;

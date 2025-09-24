@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<BorderPane xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@../css/application.css" />
+    </stylesheets>
+    <top>
+        <MenuBar fx:id="menuBar">
+            <Menu fx:id="fileMenu" text="%file">
+                <MenuItem fx:id="settingsMenuItem" text="%settings"/>
+                <SeparatorMenuItem/>
+                <MenuItem fx:id="exitMenuItem" text="%exit"/>
+            </Menu>
+            <Menu fx:id="helpMenu" text="%help">
+                <items>
+                    <MenuItem fx:id="creditsMenuItem" text="%credits"/>
+                    <MenuItem fx:id="aboutMenuItem" text="%about"/>
+                </items>
+            </Menu>
+        </MenuBar>
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            <VBox fx:id="dropAreaBox" >
+                <Label fx:id="statusLabel" text="%drag_files_into_drop_area"/>
+            </VBox>
+
+            <HBox spacing="10">
+                <Button fx:id="addButton" text="%add">
+                    <graphic>
+                        <ImageView fx:id="addIcon"/>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="removeButton" text="%remove">
+                    <graphic>
+                        <ImageView fx:id="removeIcon"/>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="convertButton" text="%convert_to_pdfa" disable="true">
+                    <graphic>
+                        <ImageView fx:id="playIcon"/>
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <TitledPane text="%advanced_options" expanded="false">
+                <VBox spacing="18">
+                    <padding>
+                        <Insets top="14" right="14" bottom="14" left="14"/>
+                    </padding>
+                    <GridPane hgap="14" vgap="16">
+                        <Label text="%choose_dest_folder" GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER_RIGHT"/>
+                        <TextField fx:id="outputDirectoryField" prefWidth="300" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Button text="..." onAction="#selectOutputDirectory" GridPane.rowIndex="0" GridPane.columnIndex="2"
+                                maxWidth="32"/>
+
+                        <Label text="%pdfa_standard" GridPane.rowIndex="1" GridPane.columnIndex="0" alignment="CENTER_RIGHT"/>
+                        <ComboBox fx:id="pdfaStandardChoiceBox" prefWidth="200" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    </GridPane>
+                </VBox>
+            </TitledPane>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" minWidth="640" minHeight="550">
+    <stylesheets>
+        <URL value="@../css/application.css" />
+    </stylesheets>
+    <top>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="20" left="20" bottom="20" right="20"/>
+            </padding>
+            <Label fx:id="titleLabel" />
+            <Hyperlink fx:id="githubLink" text="%PDF_A_Maker_on_Github" />
+            <Text fx:id="descriptionText" wrappingWidth="600" />
+        </VBox>
+    </top>
+
+    <center>
+        <TextArea fx:id="licenseArea" wrapText="true" editable="false" />
+    </center>
+
+</BorderPane>

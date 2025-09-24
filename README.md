@@ -3,12 +3,13 @@
 This app converts PDF documents into PDF/A (archival PDF) format. PDF/A is a subset of the PDF format designed for long-term preservation of electronic documents, ensuring that documents can be reproduced exactly the same way in the future.
 Further information can be found on [Wikipedia](https://en.wikipedia.org/wiki/PDF/A).
 
+
 ![pdfa-maker_main_window.png](doc/pdfa-maker_main_window.png)
 
 ## Features
 
 * Converts standard PDF files to PDF/A format
-* Simple JavaFX user interface to perform the migration
+* Simple JavaFX user interface to perform the conversion
 * Supports the following standards:
   * PDF/A-1B
   * PDF/A-1A
@@ -25,7 +26,7 @@ Further information can be found on [Wikipedia](https://en.wikipedia.org/wiki/PD
 * JavaFX 
 * Maven
 
-This app requires both Java and JFX version 21 or higher. It's recommended to use a JDK distribution that already includes both. The recommendation here is BellSoft Liberica. Of course, any JDK distribution can be used, but it must be ensured that JFX is also available.
+This app requires Java and JFX version 21 or higher. It's recommended to use a JDK distribution that already includes both. The recommendation here is BellSoft Liberica. Of course, any JDK distribution can be used, but it must be ensured that JFX is also available.
 
 ## Installation
 

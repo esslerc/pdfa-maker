@@ -1,6 +1,7 @@
-package com.github.esslerc.pdfamaker.service;
+package com.github.esslerc.pdfamaker.domain;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public enum PDFAStandard {
@@ -22,6 +23,10 @@ public enum PDFAStandard {
 
     public static PDFAStandard getEnumForValue(String value) {
         return Arrays.stream(PDFAStandard.values()).filter(it -> Objects.equals(it.getLabel(), value)).findFirst().orElseThrow(IllegalStateException::new);
+    }
+
+    public static List<String> getPDFAStandardsAsStringList() {
+        return Arrays.stream(PDFAStandard.values()).map(item -> item.label).toList();
     }
 
     public String getConformance() {

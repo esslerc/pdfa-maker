@@ -1,12 +1,10 @@
 package com.github.esslerc.pdfamaker.service.impl;
 
-import com.github.esslerc.pdfamaker.service.*;
+import com.github.esslerc.pdfamaker.domain.PDFAStandard;
+import com.github.esslerc.pdfamaker.service.PDFAServiceTestEnv;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 public class PDFAServiceTest {
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import java.net.URL?>
+<VBox xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" spacing="10" >
+    <stylesheets>
+        <URL value="@../css/application.css"/>
+    </stylesheets>
+    <padding>
+        <Insets top="20" left="20" bottom="20" right="20"/>
+    </padding>
+    <Label fx:id="descriptionLabel"/>
+    <HBox spacing="10">
+        <ListView fx:id="licensesList" prefWidth="200"/>
+        <TextArea fx:id="licenseContentArea" editable="false" wrapText="true"/>
+    </HBox>
+</VBox>
+
