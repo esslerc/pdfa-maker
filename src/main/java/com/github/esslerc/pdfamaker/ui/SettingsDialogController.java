@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -30,7 +31,10 @@ public class SettingsDialogController {
     private ComboBox<String> languageComboBox;
 
     @FXML
-    private Button saveBtn;
+    private Button saveBtn, cancelBtn;
+
+    @FXML
+    private BorderPane settingsDialog;
 
     private final SettingsService settingsService;
     private final DirectoryChooser directoryChooser;
@@ -49,6 +53,7 @@ public class SettingsDialogController {
 
         chooseFolderBtn.setOnAction(event -> openDirectoryChooser());
         saveBtn.setOnAction(event -> saveSettings());
+        cancelBtn.setOnAction(event -> closeDialog());
     }
 
     private void loadSettings() {
@@ -76,7 +81,13 @@ public class SettingsDialogController {
             settingsService.saveSettingsData(newSettingsData);
         }
 
-        Stage stage = (Stage) saveBtn.getScene().getWindow();
+        closeDialog();
+    }
+
+    private void closeDialog() {
+        loadSettings();
+
+        Stage stage = (Stage) settingsDialog.getScene().getWindow();
         stage.close();
     }
 

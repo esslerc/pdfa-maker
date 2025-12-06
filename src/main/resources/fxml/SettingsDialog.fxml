@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:id="settingsDialog">
     <stylesheets>
         <URL value="@../css/application.css" />
     </stylesheets>
@@ -42,6 +42,7 @@
                 <Insets bottom="24" right="24" />
             </padding>
             <Button fx:id="saveBtn" prefWidth="100" text="%save" />
+            <Button fx:id="cancelBtn" styleClass="button,cancel-button" prefWidth="100" text="%cancel" />
         </HBox>
     </bottom>
 </BorderPane>
